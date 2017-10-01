@@ -3,9 +3,9 @@
 tarelki = int(input('Количество тарелок:'))
 sredstvo = float(input('Количество средства:'))
 
-if tarelki < 0:
+if tarelki <= 0:
     print('Некорректные данные')
-if sredstvo < 0:
+if sredstvo <= 0:
     print('Некорректные данные')
 else:
     while sredstvo >= 0:
