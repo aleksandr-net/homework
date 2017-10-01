@@ -12,11 +12,11 @@ else:
         sredstvo = sredstvo - 0.5
         tarelki = tarelki - 1
         if tarelki == 0 and sredstvo == 0:
-            print('Всё помыто')
+            print('Все тарелки вымыты, моющее средство закончилось')
             break
         if sredstvo == 0 and tarelki > 0:
-            print('Средсва нет. Осталось', tarelki, 'немытых тарелок')
+            print('Моющее средство закончилось. Осталось', tarelki, 'тарелок')
             break
         if sredstvo > 0 and tarelki == 0:
-            print('Тарелки вымоты, осталось', sredstvo, 'ед. средства')
+            print('Все тарелки вымыты. Осталось', sredstvo, 'ед. моющего средства')
             break
