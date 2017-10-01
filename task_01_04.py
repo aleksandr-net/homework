@@ -1,13 +1,13 @@
 #!/usr/bin/python3.5
 
-print('Введите координаты трёх точек\n')
+# Введите координаты трёх точек
 
-AX = int(input('AX = '))
-AY = int(input('AY = '))
-BX = int(input('BX = '))
-BY = int(input('BY = '))
-CX = int(input('CX = '))
-CY = int(input('CY = '))
+AX = int(input())
+AY = int(input())
+BX = int(input())
+BY = int(input())
+CX = int(input())
+CY = int(input())
 
 # Вычислим длины сторон треугольника
 AB = ((AX - BX) ** 2 + (AY - BY) ** 2) ** 0.5

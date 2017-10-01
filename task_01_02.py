@@ -1,11 +1,11 @@
 #!/usr/bin/python3.5
 
-tarelki = int(input('Количество тарелок:'))
-sredstvo = float(input('Количество средства:'))
+tarelki = int(input())
+sredstvo = float(input())
 
 if tarelki <= 0:
     print('Некорректные данные')
-if sredstvo <= 0:
+elif sredstvo <= 0:
     print('Некорректные данные')
 else:
     while sredstvo >= 0:

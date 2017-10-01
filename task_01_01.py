@@ -1,6 +1,6 @@
 #!/usr/bin/python3.5
 
-print('Введите площадь садового участка (в сотках)')
+# Введите площадь садового участка (в сотках)')
 ploshad_uchastka_v_sotkah = float(input())
 if ploshad_uchastka_v_sotkah < 0:
     print('Введены некорректные данные!')

@@ -2,9 +2,9 @@
 
 print('Введите три целых числа:\n')
 
-a = int(input('Первое число:' ))
-b = int(input('Второе число:' ))
-c = int(input('Третье число:' ))
+a = int(input())
+b = int(input())
+c = int(input())
 lst = [a, b, c]
 n = 0
 
