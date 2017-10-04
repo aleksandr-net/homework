@@ -1,6 +1,6 @@
 #!/usr/bin/python3.5
 
-print('Введите три целых числа:\n')
+#print('Введите три целых числа:\n')
 
 a = int(input())
 b = int(input())
@@ -16,4 +16,4 @@ while n < len(lst):
             lst[i] = temp
         n += 1
 
-print(lst[0], ',', lst[1], ',', lst[2])
+print(lst)
