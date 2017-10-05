@@ -16,4 +16,4 @@ while n < len(lst):
             lst[i] = temp
         n += 1
 
-print(lst)
+print('{}, {}, {}'.format(lst[0], lst[1], lst[2]))
