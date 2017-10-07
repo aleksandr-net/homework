@@ -6,11 +6,9 @@ p = int(input())
 f_input = open('data.txt')
 
 f_output1 = open('out-1.txt', 'w')
-f_output1.write('')
 f_output1.close()
 
 f_output2 = open('out-2.txt', 'w')
-f_output2.write('')
 f_output2.close()
 
 lst_input = list(f_input.read().replace('\n','').split(' '))
