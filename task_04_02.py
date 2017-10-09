@@ -22,6 +22,7 @@ def http_headers_to_json(in_path, out_path):
         out_file = open(out_path, 'w')
         out_file.write(jsonarray)
         out_file.close()
+        in_file.close()
     else:
         in_file.seek(0)
 
@@ -40,5 +41,6 @@ def http_headers_to_json(in_path, out_path):
         out_file = open(out_path, 'w')
         out_file.write(jsonarray)
         out_file.close()
+        in_file.close()
     else:
         return
