@@ -85,7 +85,7 @@ def bin2dec(number):
             return
         counter += 1
 
-    to_dec(2, number)
+    return to_dec(2, number)
 
 # Перевод из восьмеричной в десятичную СС
 def oct2dec(number):
@@ -103,7 +103,7 @@ def oct2dec(number):
             return
         counter += 1
 
-    to_dec(8, number)
+    return to_dec(8, number)
 
 # Перевод из шестнадцатиричной в десятичную СС
 def hex2dec(number):
@@ -130,16 +130,16 @@ def hex2dec(number):
             number[counter] = int(number[counter])
         counter += 1
 
-    to_dec(16, number)
+    return to_dec(16, number)
 
 # Перевод из десятичной в двоичную СС
 def dec2bin(number):
-    from_dec(2, number)
+    return from_dec(2, number)
 
 # Перевод из десятичной в восьмеричную CC
 def dec2oct(number):
-    from_dec(8, number)
+    return from_dec(8, number)
 
 # Перевод из десятичной в шестнадцатиричную CC
 def dec2hex(number):
-    from_dec(16, number)
+    return from_dec(16, number)
