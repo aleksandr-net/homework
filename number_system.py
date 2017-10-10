@@ -46,7 +46,7 @@ def from_dec(system, number):
                     ostatok = 'f'
                 else:
                     pass
-                lst.append(ostatok)
+            lst.append(ostatok)
         number = int(number)
         if system == 16:
             if number == 10:
