@@ -26,6 +26,8 @@ def http_headers_to_json(in_path, out_path):
     else:
         in_file.seek(0)
 
+    in_file = open(in_path)
+
     if in_file.read(4) == 'HTTP':
         in_file.seek(0)
         line = in_file.readline()
