@@ -1,12 +1,8 @@
 CREATE TABLE IF NOT EXIST calendar (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    day DATE NOT NULL,
-    task_time CHARACTER(20) NOT NULL DEFAULT ''
-)
-
-CREATE TABLE IF NOT EXIST tasks (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    header CHARACTER(20) NOT NULL,
-    description TEXT NOT NULL,
-    status INT2 NOT NULL DEFAULT 0,
+    day NUMERIC NOT NULL,
+    time TEXT NOT NULL DEFAULT '',
+    task_header TEXT NOT NULL,
+    task_description TEXT NOT NULL,
+    task_status INTEGER NOT NULL DEFAULT 0,
 )
