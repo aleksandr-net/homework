@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXIST calendar (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    day NUMERIC NOT NULL,
-    time TEXT NOT NULL DEFAULT '',
-    task_header TEXT NOT NULL,
-    task_description TEXT NOT NULL,
-    task_status INTEGER NOT NULL DEFAULT 0,
-)
