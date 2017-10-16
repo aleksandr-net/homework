@@ -2,6 +2,7 @@
 
 import os.path as Path
 import sys
+import datetime
 from tasker import storage
 
 
@@ -9,39 +10,73 @@ get_connection = lambda : storage.connect("tasker.sqlite")
 
 
 def action_show_tasks():
-
+    """Вывести весь список задач"""
     with get_connection() as conn:
-        storage.show_tasks(conn)
+        rows = storage.show_tasks(conn)
+
+    print('\nID - Заголовок - Описание - Время начала - Время окончания - Статус\n')
+    template = '{row[id]} - {row[header]} - {row[description]} - {row[start_date]} - {row[end_date]} - {row[status]}'
+
+    for row in rows:
+        print(template.format(row=row))
 
 
 def action_add(): # Добавить задачу
     header = input("\nВведите название задачи: ")
     description = input("\nВведите описание задачи: ")
     start_date = input("\nВведите время начала задачи в формате 'ГГГГ-ММ-ДД ЧЧ:ММ:СС' (по умолчанию - текущее время): ")
-    
+    end_date = input("\nВведите время окончания задачи в формате 'ГГГГ-ММ-ДД ЧЧ:ММ:СС': ")
+
+    if start_date == '':
+        start_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     with get_connection() as conn:
-        header = storage.add_task(conn, header, description, start_date)
+        cursor = storage.add_task(conn, header, description, start_date, end_date)
 
-    print("Задача добавлена:\nЗаголовок: {}\nОписание: {}\n".format(header, description))
+    print("Задача добавлена:\nЗаголовок: {}\nОписание: {}\nВремя начала: {}\nВремя окончания: {}".format(header, description, start_date, end_date))
 
 
 def action_edit():
+    action_show_tasks()
+    task_id = input("\nВыберите задачу по ID: ")
+    header = input("\nВведите название задачи: ")
+    description = input("\nВведите описание задачи: ")
+    start_date = input("\nВведите время начала задачи в формате 'ГГГГ-ММ-ДД ЧЧ:ММ:СС' (по умолчанию - текущее время): ")
+    end_date = input("\nВведите время окончания задачи в формате 'ГГГГ-ММ-ДД ЧЧ:ММ:СС': ")
+
+    if start_date == '':
+        start_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     with get_connection() as conn:
-        storage.edit_task(conn)
+        cursor = storage.edit_task(conn, task_id, header, description, start_date, end_date)
+
+    print("Задача обновлена:\nЗаголовок: {}\nОписание: {}\nВремя начала: {}\nВремя окончания: {}".format(header, description, start_date, end_date))
 
 
 def action_close():
+    action_show_tasks()
+    task_id = input("\nВыберите задачу по ID: ")
+    end_date = input("\nВведите фактическое время окончания задачи в формате 'ГГГГ-ММ-ДД ЧЧ:ММ:СС' (по умолчанию - текущее время): ")
+
+    if end_date == '':
+        end_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     with get_connection() as conn:
-        storage.close_task(conn)
+        cursor = storage.close_task(conn, task_id, end_date)
 
 
 def action_reopen():
+    action_show_tasks()
+    task_id = input("\nВыберите задачу по ID: ")
+    start_date = input("\nВведите время начала задачи в формате 'ГГГГ-ММ-ДД ЧЧ:ММ:СС' (по умолчанию - текущее время): ")
+    end_date = input("\nВведите время окончания задачи в формате 'ГГГГ-ММ-ДД ЧЧ:ММ:СС': ")
+
+    if start_date == '':
+        start_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     with get_connection() as conn:
-        storage.reopen_task(conn)
+        cursor = storage.reopen_task(conn, task_id, start_date, end_date)
+
 
 
 def action_show_menu():

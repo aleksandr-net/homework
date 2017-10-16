@@ -1,20 +1,27 @@
 #!/usr/bin/python3.5
 
 import sqlite3
+import datetime
 
-SQL_SELECT_ALL = "SELECT id, original_url, short_url, created FROM tasker"
+SQL_SELECT_ALL = "SELECT id, header, description, start_date, end_date, status FROM tasker"
 
-SQL_SELECT_TASK_BY_ID = SQL_SELECT_ALL + " WHERE id=?"
+SQL_SELECT_TASK_BY_PK = SQL_SELECT_ALL + " WHERE id=?"
 
-SQL_SELECT_TASKS_BY_DATE = SQL_SELECT_ALL + " WHERE date=?"
+SQL_INSERT_TASK = "INSERT INTO tasker (header, description, start_date, end_date) VALUES (?, ?, ?, ?)"
 
-SQL_SELECT_TASKS_BY_DATETIME = SQL_SELECT_ALL + " WHERE date=? AND time=?"
+SQL_CLOSE_TASK =  "UPDATE tasker SET status=?, end_date=? WHERE id=?"
 
-SQL_SELECT_TASKS_BY_STATUS = SQL_SELECT_ALL + " WHERE task_status=?"
+SQL_OPEN_TASK = "UPDATE tasker SET status=?, start_date=?, end_date=? WHERE id=?"
 
-#SQL_INSERT_TASK = "INSERT INTO tasker"
+SQL_UPDATE_TASK = "UPDATE tasker SET header=?, description=?, start_date=?, end_date=? WHERE id=?"
 
-SQL_UPDATE_TASK_STATUS =  "UPDATE tasker SET task_status=? WHERE id=?"
+
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+
+    return d
 
 
 def connect(db_name=None):
@@ -22,30 +29,46 @@ def connect(db_name=None):
         db_name = ':memory:'
 
     conn = sqlite3.connect(db_name)
-
-    # превращение кортежа в словарь (сделаем позже)
+    conn.row_factory = dict_factory
 
     return conn
 
 
 def initialize(conn, creation_schema):
     """Инициализирует БД"""
-#    with conn, open(creation_schema) as f:
-#        conn.executescript(f.read())
+    with conn, open(creation_schema) as f:
+        conn.executescript(f.read())
 
 
-def show_tasks():
+def show_tasks(conn):
     """Выводит список всех задач"""
+    with conn:
+        cursor = conn.execute(SQL_SELECT_ALL)
+        return cursor.fetchall()
 
-def add_task():
+def add_task(conn, header, description, start_date, end_date):
     """Добавляет новую задачу"""
 
-def edit_task():
+    with conn:
+        cursor = conn.execute(SQL_INSERT_TASK, (header, description, start_date, end_date))
+
+
+def edit_task(conn, task_id, header, description, start_date, end_date):
     """Редактирует задачу"""
 
-def close_task():
+    with conn:
+        cursor = conn.execute(SQL_UPDATE_TASK, (header, description, start_date, end_date, task_id))
+
+
+def close_task(conn, task_id, end_date):
     """Завершает задачу"""
 
+    with conn:
+        cursor = conn.execute(SQL_CLOSE_TASK, (1, end_date, task_id))
 
-def reopen_task():
+
+def reopen_task(conn, task_id, start_date, end_date):
     """Переоткрывает задачу"""
+
+    with conn:
+        cursor = conn.execute(SQL_OPEN_TASK, (0, start_date, end_date, task_id))
