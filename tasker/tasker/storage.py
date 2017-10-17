@@ -1,7 +1,7 @@
 #!/usr/bin/python3.5
 
 import sqlite3
-import datetime
+from tasker import date_checker
 
 SQL_SELECT_ALL = "SELECT id, header, description, start_date, end_date, status FROM tasker"
 
@@ -48,6 +48,9 @@ def show_tasks(conn):
 
 def add_task(conn, header, description, start_date, end_date):
     """Добавляет новую задачу"""
+    date_checker.validate(start_date)
+    date_checker.validate(end_date)
+    date_checker.compare(start_date, end_date)
 
     with conn:
         cursor = conn.execute(SQL_INSERT_TASK, (header, description, start_date, end_date))
@@ -55,6 +58,8 @@ def add_task(conn, header, description, start_date, end_date):
 
 def edit_task(conn, task_id, header, description, start_date, end_date):
     """Редактирует задачу"""
+    date_checker.validate(start_date)
+    date_checker.validate(end_date)
 
     with conn:
         cursor = conn.execute(SQL_UPDATE_TASK, (header, description, start_date, end_date, task_id))
@@ -62,13 +67,16 @@ def edit_task(conn, task_id, header, description, start_date, end_date):
 
 def close_task(conn, task_id, end_date):
     """Завершает задачу"""
+    date_checker.validate(end_date)
 
     with conn:
-        cursor = conn.execute(SQL_CLOSE_TASK, (1, end_date, task_id))
+        cursor = conn.execute(SQL_CLOSE_TASK, ('closed', end_date, task_id))
 
 
 def reopen_task(conn, task_id, start_date, end_date):
     """Переоткрывает задачу"""
+    date_checker.validate(start_date)
+    date_checker.validate(end_date)
 
     with conn:
-        cursor = conn.execute(SQL_OPEN_TASK, (0, start_date, end_date, task_id))
+        cursor = conn.execute(SQL_OPEN_TASK, ('opened', start_date, end_date, task_id))

@@ -4,11 +4,24 @@ import os.path as Path
 import sys
 import datetime
 from tasker import storage
+from collections import OrderedDict, namedtuple
 
 
 get_connection = lambda : storage.connect("tasker.sqlite")
 
 
+Action = namedtuple('Action', ['func', 'name'])
+actions = OrderedDict()
+
+
+def menu_action(cmd, name):
+    def decorator(func):
+        actions[cmd] = Action(func=func, name=name)
+        return func
+    return decorator
+
+
+@menu_action('1', 'Вывести весь список задач')
 def action_show_tasks():
     """Вывести весь список задач"""
     with get_connection() as conn:
@@ -21,6 +34,7 @@ def action_show_tasks():
         print(template.format(row=row))
 
 
+@menu_action('2', 'Добавить задачу')
 def action_add(): # Добавить задачу
     header = input("\nВведите название задачи: ")
     description = input("\nВведите описание задачи: ")
@@ -36,6 +50,7 @@ def action_add(): # Добавить задачу
     print("Задача добавлена:\nЗаголовок: {}\nОписание: {}\nВремя начала: {}\nВремя окончания: {}".format(header, description, start_date, end_date))
 
 
+@menu_action('3', 'Отредактировать задачу')
 def action_edit():
     action_show_tasks()
     task_id = input("\nВыберите задачу по ID: ")
@@ -53,6 +68,7 @@ def action_edit():
     print("Задача обновлена:\nЗаголовок: {}\nОписание: {}\nВремя начала: {}\nВремя окончания: {}".format(header, description, start_date, end_date))
 
 
+@menu_action('4', 'Завершить задачу')
 def action_close():
     action_show_tasks()
     task_id = input("\nВыберите задачу по ID: ")
@@ -65,6 +81,7 @@ def action_close():
         cursor = storage.close_task(conn, task_id, end_date)
 
 
+@menu_action('5', 'Начать задачу сначала')
 def action_reopen():
     action_show_tasks()
     task_id = input("\nВыберите задачу по ID: ")
@@ -78,19 +95,17 @@ def action_reopen():
         cursor = storage.reopen_task(conn, task_id, start_date, end_date)
 
 
-
+@menu_action('m', 'Показать меню')
 def action_show_menu():
-    print("""Ежедневник. Выберите действие:
+    menu = []
 
-1. Вывести список задач
-2. Добавить задачу
-3. Отредактировать задачу
-4. Завершить задачу
-5. Начать задачу сначала
-m. Показать меню
-q. Выход""")
+    for cmd, action in actions.items():
+        menu.append('{}. {}'.format(cmd, action.name))
+
+    print('\n'.join(menu))
 
 
+@menu_action('q', 'Выход')
 def action_exit():
     sys.exit(0)
 
@@ -103,16 +118,6 @@ def main():
     with get_connection() as conn:
         storage.initialize(conn, creation_schema)
 
-    actions = {
-        '1': action_show_tasks,
-        '2': action_add,
-        '3': action_edit,
-        '4': action_close,
-        '5': action_reopen,
-        'm': action_show_menu,
-        'q': action_exit
-    }
-
     action_show_menu()
 
     while True:
@@ -120,6 +125,6 @@ def main():
         action = actions.get(cmd)
 
         if action:
-            action()
+            action.func()
         else:
             print('Неизвестная команда')
