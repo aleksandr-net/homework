@@ -60,6 +60,7 @@ def edit_task(conn, task_id, header, description, start_date, end_date):
     """Редактирует задачу"""
     date_checker.validate(start_date)
     date_checker.validate(end_date)
+    date_checker.compare(start_date, end_date)
 
     with conn:
         cursor = conn.execute(SQL_UPDATE_TASK, (header, description, start_date, end_date, task_id))
@@ -77,6 +78,7 @@ def reopen_task(conn, task_id, start_date, end_date):
     """Переоткрывает задачу"""
     date_checker.validate(start_date)
     date_checker.validate(end_date)
+    date_checker.compare(start_date, end_date)
 
     with conn:
         cursor = conn.execute(SQL_OPEN_TASK, ('opened', start_date, end_date, task_id))
