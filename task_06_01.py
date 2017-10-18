@@ -34,20 +34,3 @@ def run_on_windows(func):
         else:
             return None
     return wrapper
-
-
-@run_on_linux
-def func_linux():
-    print('Эта функция выполняется только на Linux!')
-
-@run_on_macos
-def func_macos():
-    print('Эта функция выполняется только на MacOS!')
-
-@run_on_windows
-def func_windows():
-    print('Эта функция выполняется только на Windows!')
-
-func_linux()
-func_macos()
-func_windows()
