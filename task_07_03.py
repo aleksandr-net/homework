@@ -17,3 +17,24 @@ def strict_argument_types(func):
                 raise TypeError("The argument {} must be {}, passed {}".format(key, sig, type(val)))
         return func(*args)
     return wrapper
+
+
+def strict_return_type(func):
+    @wraps(func)
+    def wrapper(*args):
+        try:
+            sig = signature(func)
+            if sig.return_annotation != type(func(*args)):
+                raise TypeError
+            else:
+                pass
+        except TypeError:
+            raise TypeError("The return value must be {}, not {}".format(sig.return_annotation, type(func(*args))
+        return func(*args)
+    return wrapper
+
+@strict_return_type
+def summa(a:int, b:int) -> int:
+    return a + b
+
+print(summa(2,2))
