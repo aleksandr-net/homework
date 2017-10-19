@@ -1,5 +1,5 @@
 #!/usr/bin/python3.5
-from inspect import signature, getcallargs, getmembers
+from inspect import signature, getcallargs
 from functools import wraps
 
 
