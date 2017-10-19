@@ -24,17 +24,12 @@ def strict_return_type(func):
     def wrapper(*args):
         try:
             sig = signature(func)
-            if sig.return_annotation != type(func(*args)):
+            result = func(*args)
+            if sig.return_annotation != type(result):
                 raise TypeError
             else:
                 pass
         except TypeError:
-            raise TypeError("The return value must be {}, not {}".format(sig.return_annotation, type(func(*args))
-        return func(*args)
+            raise TypeError("The return value must be {}, not {}".format(sig.return_annotation, type(result)))
+        return result
     return wrapper
-
-@strict_return_type
-def summa(a:int, b:int) -> int:
-    return a + b
-
-print(summa(2,2))
