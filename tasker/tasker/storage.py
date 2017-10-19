@@ -1,11 +1,9 @@
 #!/usr/bin/python3.5
 
 import sqlite3
-from tasker import date_checker
+from tasker import checker
 
 SQL_SELECT_ALL = "SELECT id, header, description, start_date, end_date, status FROM tasker"
-
-SQL_SELECT_TASK_BY_PK = SQL_SELECT_ALL + " WHERE id=?"
 
 SQL_INSERT_TASK = "INSERT INTO tasker (header, description, start_date, end_date) VALUES (?, ?, ?, ?)"
 
@@ -43,14 +41,15 @@ def initialize(conn, creation_schema):
 def show_tasks(conn):
     """Выводит список всех задач"""
     with conn:
+        checker.status_changer(conn)
         cursor = conn.execute(SQL_SELECT_ALL)
         return cursor.fetchall()
 
 def add_task(conn, header, description, start_date, end_date):
     """Добавляет новую задачу"""
-    date_checker.validate(start_date)
-    date_checker.validate(end_date)
-    date_checker.compare(start_date, end_date)
+    checker.date_validate(start_date)
+    checker.date_validate(end_date)
+    checker.date_compare(start_date, end_date)
 
     with conn:
         cursor = conn.execute(SQL_INSERT_TASK, (header, description, start_date, end_date))
@@ -58,9 +57,9 @@ def add_task(conn, header, description, start_date, end_date):
 
 def edit_task(conn, task_id, header, description, start_date, end_date):
     """Редактирует задачу"""
-    date_checker.validate(start_date)
-    date_checker.validate(end_date)
-    date_checker.compare(start_date, end_date)
+    checker.date_validate(start_date)
+    checker.date_validate(end_date)
+    checker.date_compare(start_date, end_date)
 
     with conn:
         cursor = conn.execute(SQL_UPDATE_TASK, (header, description, start_date, end_date, task_id))
@@ -68,7 +67,7 @@ def edit_task(conn, task_id, header, description, start_date, end_date):
 
 def close_task(conn, task_id, end_date):
     """Завершает задачу"""
-    date_checker.validate(end_date)
+    checker.date_validate(end_date)
 
     with conn:
         cursor = conn.execute(SQL_CLOSE_TASK, ('closed', end_date, task_id))
@@ -76,9 +75,9 @@ def close_task(conn, task_id, end_date):
 
 def reopen_task(conn, task_id, start_date, end_date):
     """Переоткрывает задачу"""
-    date_checker.validate(start_date)
-    date_checker.validate(end_date)
-    date_checker.compare(start_date, end_date)
+    checker.date_validate(start_date)
+    checker.date_validate(end_date)
+    checker.date_compare(start_date, end_date)
 
     with conn:
         cursor = conn.execute(SQL_OPEN_TASK, ('opened', start_date, end_date, task_id))

@@ -3,7 +3,7 @@
 import os.path as Path
 import sys
 import datetime
-from tasker import storage
+from tasker import storage, checker
 from collections import OrderedDict, namedtuple
 
 
@@ -27,11 +27,19 @@ def action_show_tasks():
     with get_connection() as conn:
         rows = storage.show_tasks(conn)
 
-    print('\nID - Заголовок - Описание - Время начала - Время окончания - Статус\n')
+    print("""
+\t\t#########################
+\t\t#\tЕжедневник\t#
+\t\t#########################
+    
+ID - Заголовок - Описание - Время начала - Время окончания - Статус
+""")
     template = '{row[id]} - {row[header]} - {row[description]} - {row[start_date]} - {row[end_date]} - {row[status]}'
 
     for row in rows:
         print(template.format(row=row))
+
+    print('\n\t\t#########################\n')
 
 
 @menu_action('2', 'Добавить задачу')
@@ -54,6 +62,10 @@ def action_add(): # Добавить задачу
 def action_edit():
     action_show_tasks()
     task_id = input("\nВыберите задачу по ID: ")
+
+    with get_connection() as conn:
+        cursor = checker.id_check(conn, task_id)
+
     header = input("\nВведите название задачи: ")
     description = input("\nВведите описание задачи: ")
     start_date = input("\nВведите время начала задачи в формате 'ГГГГ-ММ-ДД ЧЧ:ММ:СС' (по умолчанию - текущее время): ")
@@ -72,6 +84,10 @@ def action_edit():
 def action_close():
     action_show_tasks()
     task_id = input("\nВыберите задачу по ID: ")
+
+    with get_connection() as conn:
+        cursor = checker.id_check(conn, task_id)
+
     end_date = input("\nВведите фактическое время окончания задачи в формате 'ГГГГ-ММ-ДД ЧЧ:ММ:СС' (по умолчанию - текущее время): ")
 
     if end_date == '':
@@ -85,6 +101,10 @@ def action_close():
 def action_reopen():
     action_show_tasks()
     task_id = input("\nВыберите задачу по ID: ")
+
+    with get_connection() as conn:
+        cursor = checker.id_check(conn, task_id)
+
     start_date = input("\nВведите время начала задачи в формате 'ГГГГ-ММ-ДД ЧЧ:ММ:СС' (по умолчанию - текущее время): ")
     end_date = input("\nВведите время окончания задачи в формате 'ГГГГ-ММ-ДД ЧЧ:ММ:СС': ")
 
