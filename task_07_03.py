@@ -25,10 +25,11 @@ def strict_return_type(func):
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
         sig = signature(func)
+        anno = sig.return_annotation
         res_type = type(result)
 
-        if not isinstance(result, sig.return_annotation):
-            raise TypeError('The return value must be "{}", not "{}"'.format(sig.return_annotation, res_type))
+        if not isinstance(result, anno):
+            raise TypeError('The return value must be "{}", not "{}"'.format(anno, res_type))
         else:
             pass
 
