@@ -1,3 +1,6 @@
+import datetime
+
+
 class Person(object):
     def __init__(self, firstname, lastname):
         self.firstname = firstname
@@ -18,4 +21,14 @@ class Teachers(Person):
 
 class Courses(object):
     def __init__(self, name, duration, disciplines, teachers, students):
-        pass
+        self.name = name
+        self.duration = duration
+        self.disciplines = disciplines
+        self.teachers = teachers
+        self.students = students
+
+
+class Discipline(object):
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description
