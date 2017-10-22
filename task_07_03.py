@@ -5,9 +5,9 @@ from functools import wraps
 
 def strict_argument_types(func):
     @wraps(func)
-    def wrapper(*args):
+    def wrapper(*args, **kwargs):
         sig = signature(func)
-        bind_args = sig.bind(*args).arguments
+        bind_args = sig.bind(*args, **kwargs).arguments
 
         for key, val in bind_args.items():
             anno = sig.parameters[key].annotation
@@ -16,15 +16,14 @@ def strict_argument_types(func):
             else:
                 pass
 
-        return func(*args)
-
+        return func(*args, **kwargs)
     return wrapper
 
 
 def strict_return_type(func):
     @wraps(func)
-    def wrapper(*args):
-        result = func(*args)
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
         sig = signature(func)
         res_type = type(result)
 
@@ -34,5 +33,4 @@ def strict_return_type(func):
             pass
 
         return result
-
     return wrapper
