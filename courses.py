@@ -7,20 +7,18 @@ class Person(object):
         self.lastname = lastname
 
 
-class Student(Person):
-    def __init__(self, firstname, lastname, teaches):
-        super().__init__(firstname, lastname)
-        self.teaches = teaches
-
-
 class Teachers(Person):
     def __init__(self, firstname, lastname, skills):
         super().__init__(firstname, lastname)
+        self.skills = None
+        self.set_skills(skills)
+
+    def set_skills(self, skills):
         self.skills = skills
 
 
 class Courses(object):
-    def __init__(self, name, duration=None, disciplines=None, teachers=None, students=None):
+    def __init__(self, name, duration, disciplines, teachers, students):
         self.name = name
         self.duration = duration
         self.disciplines = disciplines
