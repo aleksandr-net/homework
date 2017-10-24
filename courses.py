@@ -1,29 +1,29 @@
 import datetime
 
 
-class Person(object):
-    def __init__(self, firstname, lastname):
+class Student(object):
+    def __init__(self, firstname, lastname, courses):
         self.firstname = firstname
         self.lastname = lastname
+        self.courses = courses
 
 
 class Teachers(Person):
     def __init__(self, firstname, lastname, skills):
         super().__init__(firstname, lastname)
-        self.skills = None
-        self.set_skills(skills)
-
-    def set_skills(self, skills):
         self.skills = skills
+        #self.id =
 
 
 class Courses(object):
-    def __init__(self, name, duration, disciplines, teachers, students):
+    def __init__(self, name, duration=None, disciplines=None, teachers=None, students=None):
         self.name = name
         self.duration = duration
         self.disciplines = disciplines
         self.teachers = teachers
         self.students = students
+
+
 
 
     def set_duration(self, start_date, end_date):
