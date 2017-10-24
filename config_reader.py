@@ -49,9 +49,3 @@ def read_params(source):
     if validate_filetype(source) == 'custom':
         # read as custom
         pass
-
-#print(validate_csv("/home/oliferuk/homework/test_files/test.csv"))
-#print(validate_json("/home/oliferuk/homework/test_files/test.json"))
-#print(validate_xlsx("/home/oliferuk/homework/test_files/test.xlsx"))
-#print(validate_xls("/home/oliferuk/homework/test_files/test1.xls"))
-read_params("/home/oliferuk/homework/test_files/test.txt")
