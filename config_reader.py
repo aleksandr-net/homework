@@ -11,47 +11,36 @@ def validate_json(source):
         except ValueError:
             return False
 
-def validate_csv(source):
+
+def validate_filetype(source):
     file_info = magic.from_file(source)
     csv_valid_string = 'with CRLF line terminators'
-
-    if not csv_valid_string in file_info:
-        return False
-
-    return True
-
-
-def validate_xlsx(source):
-    file_info = magic.from_file(source)
     xlsx_valid_string = 'Microsoft OOXML'
-
-    if not xlsx_valid_string in file_info:
-        return False
-
-    return True
-
-
-def validate_xls(source):
-    file_info = magic.from_file(source)
     xls_valid_string = 'Composite Document File V2'
-
-    if not xls_valid_string in file_info:
-        return False
-
-    return True
-
-
-def validate_ods(source):
-    file_info = magic.from_file(source)
     ods_valid_string = 'OpenDocument Spreadsheet'
+    xml_valid_string = 'XML 1.0 document'
 
-    if not ods_valid_string in file_info:
-        return False
+    if csv_valid_string in file_info:
+        print("It's csv!")
+    elif xlsx_valid_string in file_info:
+        print("It's xlsx!")
+    elif xls_valid_string in file_info:
+        print("It's xls!")
+    elif ods_valid_string in file_info:
+        print("It's ods!")
+    elif xml_valid_string in file_info:
+        print("It's xml!")
+    elif validate_json(source):
+        print("It's json!")
+    else:
+        print("Unknown filetype")
 
-    return True
+
+def read_params(source):
+    return validate_filetype(source)
 
 #print(validate_csv("/home/oliferuk/homework/test_files/test.csv"))
 #print(validate_json("/home/oliferuk/homework/test_files/test.json"))
 #print(validate_xlsx("/home/oliferuk/homework/test_files/test.xlsx"))
 #print(validate_xls("/home/oliferuk/homework/test_files/test1.xls"))
-print(validate_ods("/home/oliferuk/homework/test_files/test.csv"))
+read_params("/home/oliferuk/homework/test_files/test.txt")
