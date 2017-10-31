@@ -39,7 +39,7 @@ class Validator(metaclass=ABCMeta):
 class EMailValidator(Validator):
 
     @staticmethod
-    def validate(value):
+    def email(value):
         result = re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", value)
         if result is None:
             return False
