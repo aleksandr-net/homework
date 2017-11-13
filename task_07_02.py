@@ -12,3 +12,4 @@ def password_generator(max):
 if __name__ == '__main__':
     print(password_generator(8))
     print(next(password_generator(8)))
+
